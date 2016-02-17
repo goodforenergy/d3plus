@@ -35,22 +35,16 @@ module.exports = function(arr, x) {
 
 },{}],3:[function(require,module,exports){
 // Determines if the current browser is Internet Explorer.
-module.exports = /*@cc_on!@*/false
+module.exports = /(MSIE|Trident\/|Edge\/)/i.test(navigator.userAgent);
 
 },{}],4:[function(require,module,exports){
 module.exports = d3.select("html").attr("dir") === "rtl";
 
 
 },{}],5:[function(require,module,exports){
-module.exports = ("ontouchstart" in window) || window.DocumentTouch && document instanceof DocumentTouch ? true : false;
-
-
-},{}],6:[function(require,module,exports){
-var ie, print, touch, wiki;
+var ie, print, wiki;
 
 ie = require("../../client/ie.js");
-
-touch = require("../../client/touch.coffee");
 
 wiki = require("./wiki.coffee");
 
@@ -154,7 +148,7 @@ print.wiki = function(url) {
 module.exports = print;
 
 
-},{"../../client/ie.js":3,"../../client/touch.coffee":5,"./wiki.coffee":7}],7:[function(require,module,exports){
+},{"../../client/ie.js":3,"./wiki.coffee":6}],6:[function(require,module,exports){
 module.exports = {
   active: "Visualizations#active",
   aggs: "Visualizations#aggs",
@@ -218,7 +212,7 @@ module.exports = {
 };
 
 
-},{}],8:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 module.exports = function(type) {
   var attrs, styles, tester;
   if (["div", "svg"].indexOf(type) < 0) {
@@ -240,7 +234,7 @@ module.exports = function(type) {
 };
 
 
-},{}],9:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 module.exports = {
   dev: {
     accepted: "{0} is not an accepted value for {1}, please use one of the following: {2}.",
@@ -377,7 +371,7 @@ module.exports = {
 };
 
 
-},{}],10:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 module.exports = {
     "format": {
         "decimal": ",",
@@ -531,7 +525,7 @@ module.exports = {
     ]
 }
 
-},{}],11:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 module.exports = {
     "format": {
         "decimal": ",",
@@ -689,6 +683,145 @@ module.exports = {
         "HVAC",
         "ID",
         "IT",
+        "TV",
+        "UI"
+    ]
+}
+
+},{}],11:[function(require,module,exports){
+module.exports = {
+    "format": {
+        "decimal": ".",
+        "thousands": ",",
+        "grouping": [3],
+        "currency": ["₩", ""],
+        "dateTime": "%Y/%m/%d %a %X",
+        "date": "%Y/%m/%d",
+        "time": "%H:%M:%S",
+        "periods": ["오전", "오후"],
+        "days": ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
+        "shortDays": ["일", "월", "화", "수", "목", "금", "토"],
+        "months": ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+        "shortMonths": ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
+    },
+    "dev": {
+        "accepted": "{0} {1}, 다음 중 하나를 사용하십시오에 대한 허용 값이 아닙니다 : {2}.",
+        "deprecated": "{0} 메소드가 제거 된, 사용하는 코드를 업데이트하십시오 {1}.",
+        "noChange": "{0}이 변경되지 않았기 때문에 업데이트되지 않았습니다.",
+        "noContainer": "페이지 매칭 {0}에 컨테이너를 찾을 수 없다.",
+        "of": "의",
+        "oldStyle": "{0} 지금에 직접 내장 된위한 스타일의 호텔 .{1}().",
+        "sameEdge": "가장자리는 자신에 링크 할 수 없습니다. 자동으로 자체 참조 가장자리 {0}을 제거하는 단계를 포함한다.",
+        "set": "{0} 설정되어 있습니다.",
+        "setLong": "{0} {1}로 설정되어 있습니다.",
+        "setContainer": ".container() 사용하여 컨테이너 사업부를 정의하십시오"
+    },
+    "error": {
+        "accepted": "{0} 아니다 허용 {1} {2} 시각화는 다음 중 하나를 사용하시기 바랍니다 : {3}.",
+        "connections": "{0}에 대한 연결이 없음.",
+        "data": "자료 없음",
+        "dataYear": "{0}에 대한 자료가 없음.",
+        "lib": "{0} 시각화는 {1} 라이브러리를로드 할 필요합니다.",
+        "libs": "{0} 시각화는 다음과 같은 라이브러리를로드 할 필요 : {1}.",
+        "method": "{0} 시각화를 위해 {1} 메서드를 설정해야 한다.",
+        "methods": "{0} 시각화를 위해 다음과 같은 메서드를 설정해야한다: {1}."
+    },
+    "lowercase": [],
+    "method": {
+        "active": "활성 세그먼트",
+        "color": "색",
+        "depth": "깊이",
+        "dev": "풀어서",
+        "focus": "초점",
+        "icon": "상",
+        "id": "신분증",
+        "height": "높이",
+        "labels": "라벨",
+        "legend": "범례",
+        "margin": "여유",
+        "messages": "상태 메시지",
+        "order": "주문",
+        "search": "수색",
+        "shape": "모양",
+        "size": "크기",
+        "style": "스타일",
+        "temp": "임시 세그먼트",
+        "text": "본문",
+        "time": "시각",
+        "timeline": "타임 라인",
+        "total": "총 세그먼트",
+        "type": "유형",
+        "width": "폭",
+        "x": "X 축",
+        "y": "Y 축",
+        "zoom": "줌",
+        "mode": "모드",
+        "mute": "숨김",
+        "solo": "독주"
+    },
+    "time": [
+        "날짜",
+        "요일",
+        "월",
+        "시간",
+        "년"
+    ],
+    "visualization": {
+        "bubbles": "버블 차트",
+        "chart": "차트",
+        "geo_map": "지도형",
+        "line": "선형 그래프",
+        "network": "네트워크 그래프",
+        "rings": "반지",
+        "scatter": "산포도",
+        "stacked": "스택 영역",
+        "tree_map": "트리 맵",
+        "bar": "막대 차트",
+        "box": "박스 플롯",
+        "paths": "경로",
+        "pie": "파이 차트",
+        "table": "표"
+    },
+    "ui": {
+        "and": "과",
+        "back": "뒤로",
+        "collapse": "축소하려면 클릭",
+        "error": "오류",
+        "expand": "확장하려면 클릭",
+        "loading": "로드 중 ...",
+        "more": "{0} 이상",
+        "moreInfo": "추가 정보를 위해 클릭하십시오",
+        "noResults": "일치하는 결과값이 없음 {0}.",
+        "primary": "기본 연결",
+        "share": "비중",
+        "total": "합계",
+        "values": "값",
+        "including": "...을 포함하여",
+        "or": "또는"
+    },
+    "message": {
+        "data": "데이터 분석 중",
+        "draw": "데이터 시각화 중",
+        "initializing": "초기화 {0}",
+        "loading": "데이터 로딩 중",
+        "tooltipReset": "툴팁을 재설정",
+        "ui": "UI 업데이트 중"
+    },
+    "uppercase": [
+        "CEO",
+        "최고 경영자",
+        "최고 재무 책임자 (CFO)",
+        "CFO는",
+        "CNC",
+        "COO",
+        "구구",
+        "CPU",
+        "CPU를",
+        "국내 총생산 (GDP)",
+        "HVAC",
+        "ID",
+        "IT",
+        "R & D",
         "TV",
         "UI"
     ]
@@ -1470,6 +1603,7 @@ module.exports = {
   en_US: require("./languages/en_US.coffee"),
   es_ES: require("./languages/es_ES.js"),
   fr_FR: require("./languages/fr_FR.js"),
+  ko_KR: require("./languages/ko_KR.js"),
   mk_MK: require("./languages/mk_MK.js"),
   pt_BR: require("./languages/pt_BR.js"),
   pt_PT: require("./languages/pt_PT.js"),
@@ -1478,7 +1612,7 @@ module.exports = {
 };
 
 
-},{"./languages/en_US.coffee":9,"./languages/es_ES.js":10,"./languages/fr_FR.js":11,"./languages/mk_MK.js":12,"./languages/pt_BR.js":13,"./languages/pt_PT.js":14,"./languages/ru_RU.js":15,"./languages/zh_CN.js":16}],18:[function(require,module,exports){
+},{"./languages/en_US.coffee":8,"./languages/es_ES.js":9,"./languages/fr_FR.js":10,"./languages/ko_KR.js":11,"./languages/mk_MK.js":12,"./languages/pt_BR.js":13,"./languages/pt_PT.js":14,"./languages/ru_RU.js":15,"./languages/zh_CN.js":16}],18:[function(require,module,exports){
 var checkObject, copy, createFunction, initialize, print, process, setMethod, stringFormat, validObject;
 
 copy = require("../../util/copy.coffee");
@@ -1639,7 +1773,7 @@ checkObject = function(vars, method, object, key, value) {
   if (["accepted", "changed", "initialized", "previous", "process"].indexOf(key) < 0) {
     passingObject = validObject(value);
     objectOnly = validObject(object[key]) && "objectAccess" in object[key] && object[key]["objectAccess"] === false;
-    approvedObject = passingObject && (objectOnly || ((!("value" in value)) && (!(d3.keys(value)[0] in object[key]))));
+    approvedObject = passingObject && (objectOnly || ((!("value" in value)) && ((!validObject(object[key])) || (!(d3.keys(value)[0] in object[key])))));
     if (value === null || !passingObject || approvedObject) {
       setMethod(vars, method, object, key, value);
     } else if (passingObject) {
@@ -1651,7 +1785,7 @@ checkObject = function(vars, method, object, key, value) {
 };
 
 
-},{"../../object/validate.coffee":25,"../../string/format.js":26,"../../util/copy.coffee":52,"../console/print.coffee":6,"./process/detect.coffee":19,"./set.coffee":21}],19:[function(require,module,exports){
+},{"../../object/validate.coffee":25,"../../string/format.js":26,"../../util/copy.coffee":52,"../console/print.coffee":5,"./process/detect.coffee":19,"./set.coffee":21}],19:[function(require,module,exports){
 var copy, update;
 
 copy = require("../../../util/copy.coffee");
@@ -1723,7 +1857,7 @@ module.exports = function(vars, accepted, value, method, text) {
 };
 
 
-},{"../../array/contains.coffee":1,"../../string/format.js":26,"../../string/list.coffee":27,"../console/print.coffee":6}],21:[function(require,module,exports){
+},{"../../array/contains.coffee":1,"../../string/format.js":26,"../../string/list.coffee":27,"../console/print.coffee":5}],21:[function(require,module,exports){
 var copy, d3selection, mergeObject, print, process, rejected, stringFormat, updateArray, validObject;
 
 copy = require("../../util/copy.coffee");
@@ -1878,18 +2012,18 @@ module.exports = function(vars, method, object, key, value) {
 };
 
 
-},{"../../array/update.coffee":2,"../../object/merge.coffee":24,"../../object/validate.coffee":25,"../../string/format.js":26,"../../util/copy.coffee":52,"../../util/d3selection.coffee":53,"../console/print.coffee":6,"./process/detect.coffee":19,"./rejected.coffee":20}],22:[function(require,module,exports){
-var fontTester, getHeight, getWidth;
+},{"../../array/update.coffee":2,"../../object/merge.coffee":24,"../../object/validate.coffee":25,"../../string/format.js":26,"../../util/copy.coffee":52,"../../util/d3selection.coffee":53,"../console/print.coffee":5,"./process/detect.coffee":19,"./rejected.coffee":20}],22:[function(require,module,exports){
+var fontTester;
 
 fontTester = require("../core/font/tester.coffee");
 
 module.exports = function(words, style, opts) {
-  var attr, sizes, tester, tspans;
+  var attr, getHeight, getWidth, sizes, spacing, tester, tspans;
   if (!opts) {
     opts = {};
   }
-  tester = opts.parent || fontTester("svg").append("text");
   style = style || {};
+  tester = opts.parent || fontTester("svg").append("text");
   sizes = [];
   if (!(words instanceof Array)) {
     words = [words];
@@ -1901,6 +2035,22 @@ module.exports = function(words, style, opts) {
     top: "0px",
     x: 0,
     y: 0
+  };
+  spacing = 0;
+  if ("letter-spacing" in style) {
+    spacing = parseFloat(style["letter-spacing"]);
+    delete style["letter-spacing"];
+  }
+  getWidth = function(elem) {
+    var add;
+    add = 0;
+    if (spacing) {
+      add = (d3.select(elem).text().length - 1) * spacing;
+    }
+    return elem.getComputedTextLength() + add;
+  };
+  getHeight = function(elem) {
+    return elem.offsetHeight || elem.parentNode.getBBox().height || elem.getBoundingClientRect().height;
   };
   tspans.enter().append("tspan").text(String).style(style).attr(attr).each(function(d) {
     if (typeof opts.mod === "function") {
@@ -1932,16 +2082,8 @@ module.exports = function(words, style, opts) {
   return sizes;
 };
 
-getWidth = function(elem) {
-  return elem.getComputedTextLength();
-};
 
-getHeight = function(elem) {
-  return elem.offsetHeight || elem.getBoundingClientRect().height || elem.parentNode.getBBox().height;
-};
-
-
-},{"../core/font/tester.coffee":8}],23:[function(require,module,exports){
+},{"../core/font/tester.coffee":7}],23:[function(require,module,exports){
 
 /**
  * @class d3plus
@@ -1966,7 +2108,7 @@ module.exports = d3plus;
  * @static
  */
 
-d3plus.version = "1.8.1 - Cerulean (pre-release)";
+d3plus.version = "1.9.1 - Cornflower";
 
 
 /**
@@ -1980,7 +2122,7 @@ d3plus.version = "1.8.1 - Cerulean (pre-release)";
 d3plus.repo = "https://github.com/alexandersimoes/d3plus/";
 
 
-/**
+/*
  * D3plus SVG Textwrapping
  * @class d3plus.textwrap
  * @for d3plus
@@ -2122,7 +2264,7 @@ module.exports = function(list, andText, max, moreText) {
 };
 
 
-},{"../core/locale/languages/en_US.coffee":9,"./format.js":26}],28:[function(require,module,exports){
+},{"../core/locale/languages/en_US.coffee":8,"./format.js":26}],28:[function(require,module,exports){
 var foreign, tspan;
 
 foreign = require("./foreign.coffee");
@@ -2279,18 +2421,15 @@ var rtl;
 rtl = require("../../client/rtl.coffee");
 
 module.exports = function(vars) {
-  var anchor, dx, dy, ellipsis, fontSize, h, height, line, lineWidth, lines, mirror, newLine, placeWord, progress, reverse, rmod, rotate, rx, ry, space, start, textBox, translate, truncate, valign, width, words, wrap, x, y, yOffset;
-  newLine = function(w, first) {
+  var anchor, dy, ellipsis, fontSize, h, height, line, lineWidth, lines, mirror, newLine, placeWord, progress, reverse, rmod, rotate, rx, ry, space, start, textBox, translate, truncate, valign, width, words, wrap, x, xOffset, y, yOffset;
+  newLine = function(first) {
     var tspan;
-    if (!w) {
-      w = "";
-    }
     if (!reverse || first) {
       tspan = vars.container.value.append("tspan");
     } else {
       tspan = vars.container.value.insert("tspan", "tspan");
     }
-    return tspan.attr("x", x + "px").attr("dx", dx + "px").attr("dy", dy + "px").style("baseline-shift", "0%").attr("dominant-baseline", "alphabetic").text(w);
+    return tspan.attr("x", x + "px").attr("dy", dy + "px").style("baseline-shift", "0%").attr("dominant-baseline", "alphabetic");
   };
   mirror = vars.rotate.value === -90 || vars.rotate.value === 90;
   width = mirror ? vars.height.inner : vars.width.inner;
@@ -2301,14 +2440,14 @@ module.exports = function(vars) {
     anchor = vars.align.value || vars.container.align || "start";
   }
   if (anchor === "end" || (anchor === "start" && rtl)) {
-    dx = width;
+    xOffset = width;
   } else if (anchor === "middle") {
-    dx = width / 2;
+    xOffset = width / 2;
   } else {
-    dx = 0;
+    xOffset = 0;
   }
   valign = vars.valign.value || "top";
-  x = vars.container.x;
+  x = vars.container.x + xOffset;
   fontSize = vars.resize.value ? vars.size.value[1] : vars.container.fontSize || vars.size.value[0];
   dy = vars.container.dy || fontSize * 1.1;
   textBox = null;
@@ -2385,9 +2524,12 @@ module.exports = function(vars) {
       progress += joiner + word;
       textBox.text(current + joiner + word);
     }
-    if (textBox.node().getComputedTextLength() > lineWidth() || next_char === "\n") {
+    if (Math.floor(textBox.node().getComputedTextLength()) > lineWidth() || next_char === "\n") {
       textBox.text(current);
-      textBox = newLine(word);
+      if (current.length) {
+        textBox = newLine();
+      }
+      textBox.text(word);
       if (reverse) {
         return line--;
       } else {
@@ -2400,14 +2542,13 @@ module.exports = function(vars) {
   lines = null;
   wrap = function() {
     var i, len, next_char, unsafe, word;
-    vars.container.value.selectAll("tspan").remove();
-    vars.container.value.html("");
-    words = vars.text.words.slice(0);
+    vars.container.value.text("").html("");
+    words = vars.text.words.slice();
     if (reverse) {
       words.reverse();
     }
-    progress = words[0];
-    textBox = newLine(words.shift(), true);
+    progress = "";
+    textBox = newLine(true);
     line = start;
     for (i = 0, len = words.length; i < len; i++) {
       word = words[i];
@@ -2431,7 +2572,12 @@ module.exports = function(vars) {
     return lines = Math.abs(line - start) + 1;
   };
   wrap();
-  lines = line;
+  lines = 0;
+  vars.container.value.selectAll("tspan").each(function() {
+    if (d3.select(this).text().length) {
+      return lines++;
+    }
+  });
   if (vars.shape.value === "circle") {
     space = height - lines * dy;
     if (space > dy) {
@@ -2445,6 +2591,12 @@ module.exports = function(vars) {
       }
     }
   }
+  lines = 0;
+  vars.container.value.selectAll("tspan").each(function() {
+    if (d3.select(this).text().length) {
+      return lines++;
+    }
+  });
   if (valign === "top") {
     y = 0;
   } else {
@@ -2482,7 +2634,7 @@ wrap = function(vars) {
     if (firstChar !== vars.text.words[0].charAt(0)) {
       vars.text.words[0] = firstChar + vars.text.words[0];
     }
-    vars.container.value.text("");
+    vars.container.value.html("");
     if (vars.resize.value) {
       resize(vars);
     } else {
@@ -2508,7 +2660,8 @@ resize = function(vars) {
   sizeMax = Math.floor(vars.size.value[1]);
   lineWidth = vars.shape.value === "circle" ? width * 0.75 : width;
   sizes = fontSizes(words, {
-    "font-size": sizeMax + "px",
+    "font-size": sizeMax + "px"
+  }, {
     parent: vars.container.value
   });
   maxWidth = d3.max(sizes, function(d) {
@@ -2642,7 +2795,7 @@ module.exports = {
 };
 
 
-},{"../../core/console/print.coffee":6,"../../string/format.js":26}],39:[function(require,module,exports){
+},{"../../core/console/print.coffee":5,"../../string/format.js":26}],39:[function(require,module,exports){
 var locale, mergeObject;
 
 locale = require("../../core/locale/locale.coffee");
@@ -2740,7 +2893,11 @@ module.exports = {
   },
   split: {
     accepted: [Array],
-    value: ["-", "/", ";", ":", "&"]
+    process: function(s) {
+      this["break"] = new RegExp("[^\\s\\" + s.join("\\") + "]+\\" + s.join("?\\") + "?", "g");
+      return s;
+    },
+    value: ["-", "/", ";", ":", "&", "."]
   }
 };
 
@@ -2828,7 +2985,7 @@ module.exports = function() {
 };
 
 
-},{"../core/console/print.coffee":6,"../core/methods/attach.coffee":18,"./helpers/parseSize.coffee":30,"./helpers/parseText.coffee":31,"./helpers/wrap.coffee":33,"./methods/align.coffee":34,"./methods/config.coffee":35,"./methods/container.coffee":36,"./methods/dev.coffee":37,"./methods/draw.coffee":38,"./methods/format.coffee":39,"./methods/height.coffee":40,"./methods/padding.coffee":41,"./methods/resize.coffee":42,"./methods/rotate.coffee":43,"./methods/shape.coffee":44,"./methods/size.coffee":45,"./methods/text.coffee":46,"./methods/valign.coffee":47,"./methods/width.coffee":48,"./methods/x.coffee":49,"./methods/y.coffee":50}],52:[function(require,module,exports){
+},{"../core/console/print.coffee":5,"../core/methods/attach.coffee":18,"./helpers/parseSize.coffee":30,"./helpers/parseText.coffee":31,"./helpers/wrap.coffee":33,"./methods/align.coffee":34,"./methods/config.coffee":35,"./methods/container.coffee":36,"./methods/dev.coffee":37,"./methods/draw.coffee":38,"./methods/format.coffee":39,"./methods/height.coffee":40,"./methods/padding.coffee":41,"./methods/resize.coffee":42,"./methods/rotate.coffee":43,"./methods/shape.coffee":44,"./methods/size.coffee":45,"./methods/text.coffee":46,"./methods/valign.coffee":47,"./methods/width.coffee":48,"./methods/x.coffee":49,"./methods/y.coffee":50}],52:[function(require,module,exports){
 var copy, objectMerge, objectValidate;
 
 objectMerge = require("../object/merge.coffee");
