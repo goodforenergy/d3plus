@@ -13,7 +13,7 @@ module.exports = d3plus
 # @type String
 # @static
 ###
-d3plus.version = "1.8.1 - Cerulean (pre-release)"
+d3plus.version = "1.9.1 - Cornflower"
 
 ###*
 # The URL for the repo, used internally for certain error messages.
@@ -24,7 +24,7 @@ d3plus.version = "1.8.1 - Cerulean (pre-release)"
 ###
 d3plus.repo = "https://github.com/alexandersimoes/d3plus/"
 
-###*
+###
 # D3plus SVG Textwrapping
 # @class d3plus.textwrap
 # @for d3plus

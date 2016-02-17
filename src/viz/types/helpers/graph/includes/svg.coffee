@@ -50,8 +50,10 @@ module.exports = (vars) ->
           color
         else if grid and vars.axes.background.color isnt "transparent"
           mix(color, vars.axes.background.color, 0.4, 1)
-        else
+        else if vars.background.value isnt "transparent"
           mix(color, vars.background.value, 0.4, 1)
+        else
+          mix(color, "white", 0.4, 1)
 
       .attr "stroke-width"   , vars[axis].ticks.width
       .attr "shape-rendering", vars[axis].ticks.rendering.value
@@ -73,6 +75,8 @@ module.exports = (vars) ->
           mix(color, vars.background.value, 0.4, 1)
       .attr "font-family", (d) -> getFontStyle(axis, d, "family").value
       .attr "font-weight", (d) -> getFontStyle(axis, d, "weight")
+      .style "text-transform", (d) -> getFontStyle(axis, d, "transform").value
+      .style "letter-spacing", (d) -> getFontStyle(axis, d, "spacing") + "px"
 
   lineStyle = (line, axis) ->
 
@@ -158,15 +162,18 @@ module.exports = (vars) ->
         if vars[axis].ticks.visible.indexOf(d) >= 0 then y2 else y2/2
 
     groups.select("text")
-        .attr "dy", ""
         .style "text-anchor", if rotated and axis is "x" then "end" else if rotated then "start" else "middle"
         .call tickFont, axis
         .each (d) ->
+          d3.select(this)
+            .attr "dy", "0px"
+            .attr "font-size", (d) -> getFontStyle(axis, d, "size") + "px"
           d = +d if d.constructor is Date
           if !vars[axis].ticks.hidden and vars[axis].ticks.visible.indexOf(d) >= 0
             textwrap()
               .container(d3.select(this))
               .rotate(vars[axis].ticks.rotate)
+              .align(if rotated then "end" else "center")
               .valign(if rotated then "middle" else if axis is "x" then "top" else "bottom")
               .width(vars[axis].ticks.maxWidth)
               .height(vars[axis].ticks.maxHeight)
@@ -234,6 +241,8 @@ module.exports = (vars) ->
       .attr "fill", vars[axis].label.font.color
       .style "text-anchor", "middle"
       .attr "dominant-baseline", "central"
+      .style "text-transform", vars[axis].label.font.transform.value
+      .style "letter-spacing", vars[axis].label.font.spacing + "px"
 
   for axis in ["x", "y"]
 
@@ -244,7 +253,8 @@ module.exports = (vars) ->
         gridData = vars[axis].ticks.values
     else
       gridData = []
-      if vars[axis].ticks.values.indexOf(0) >= 0 and vars[axis].axis.value
+      opp = if axis is "x" then "y" else "x"
+      if vars[axis].ticks.values.indexOf(0) >= 0 and vars[opp].axis.value
         gridData = [0]
 
     # Draw Axis Grid Lines
@@ -320,39 +330,41 @@ module.exports = (vars) ->
 
       for line in userLines
         d = if validObject(line) then line.position else line
-        unless isNaN(d)
-          d = parseFloat(d)
-          if d > domain[0] and d < domain[1]
-            d = unless validObject(line) then {"position": d} else line
-            d.coords =
-              line: vars[axis].scale.viz(d.position)
-            lineData.push d
-            if d.text
+        if axis is vars.axes.discrete
+          valid = domain.indexOf(d) >= 0
+        else
+          valid = d >= domain[0] and d <= domain[1]
+        if valid
+          d = unless validObject(line) then {"position": d} else line
+          d.coords =
+            line: vars[axis].scale.viz(d.position)
+          lineData.push d
+          if d.text
 
-              d.axis    = axis
-              d.padding = vars[axis].lines.font.padding.value * 0.5
-              d.align   = vars[axis].lines.font.align.value
+            d.axis    = axis
+            d.padding = vars[axis].lines.font.padding.value * 0.5
+            d.align   = vars[axis].lines.font.align.value
 
-              position = vars[axis].lines.font.position.text
-              textPad  = if position is "middle" then 0 else d.padding * 2
-              textPad  = -textPad if position is "top"
+            position = vars[axis].lines.font.position.text
+            textPad  = if position is "middle" then 0 else d.padding * 2
+            textPad  = -textPad if position is "top"
 
-              if axis.indexOf("x") is 0
-                textPos  = if d.align is "left" then vars.axes.height else if d.align is "center" then vars.axes.height/2 else 0
-                textPos -= d.padding * 2 if d.align is "left"
-                textPos += d.padding * 2 if d.align is "right"
-              else
-                textPos  = if d.align is "left" then 0 else if d.align is "center" then vars.axes.width/2 else vars.axes.width
-                textPos -= d.padding * 2 if d.align is "right"
-                textPos += d.padding * 2 if d.align is "left"
+            if axis.indexOf("x") is 0
+              textPos  = if d.align is "left" then vars.axes.height else if d.align is "center" then vars.axes.height/2 else 0
+              textPos -= d.padding * 2 if d.align is "left"
+              textPos += d.padding * 2 if d.align is "right"
+            else
+              textPos  = if d.align is "left" then 0 else if d.align is "center" then vars.axes.width/2 else vars.axes.width
+              textPos -= d.padding * 2 if d.align is "right"
+              textPos += d.padding * 2 if d.align is "left"
 
-              d.coords.text = {}
-              d.coords.text[if axis.indexOf("x") is 0 then "y" else "x"] = textPos
-              d.coords.text[axis] = vars[axis].scale.viz(d.position)+textPad
+            d.coords.text = {}
+            d.coords.text[if axis.indexOf("x") is 0 then "y" else "x"] = textPos
+            d.coords.text[axis] = vars[axis].scale.viz(d.position)+textPad
 
-              d.transform = if axis.indexOf("x") is 0 then "rotate(-90,"+d.coords.text.x+","+d.coords.text.y+")" else null
+            d.transform = if axis.indexOf("x") is 0 then "rotate(-90,"+d.coords.text.x+","+d.coords.text.y+")" else null
 
-              textData.push d
+            textData.push d
 
       lines = lineGroup.selectAll "line.d3plus_graph_"+axis+"line"
         .data lineData, (d) -> d.position
@@ -407,7 +419,7 @@ module.exports = (vars) ->
           .attr "transform"  , (d) -> d.transform
           .attr "width", (d) -> getText(d).width + (d.padding * 2)
           .attr "height", (d) -> getText(d).height + (d.padding * 2)
-          .attr "fill", vars.axes.background.color
+          .attr "fill",  if vars.axes.background.color isnt "transparent" then vars.axes.background.color else "white"
 
       rectData = if vars[axis].lines.font.background.value then textData else []
 

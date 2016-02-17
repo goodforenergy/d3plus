@@ -90,7 +90,7 @@ module.exports = function(vars) {
   function id(d) {
 
     if (!d.d3plus.id) {
-      d.d3plus.id = ""
+      d.d3plus.id = "";
       for (var i = 0; i <= vars.depth.value; i++) {
         d.d3plus.id += fetchValue(vars,d,vars.id.nesting[i])+"_"
       }
@@ -104,6 +104,10 @@ module.exports = function(vars) {
           d.d3plus.id += "_"+val
         }
       })
+
+      if (d.d3plus.suffix) {
+        d.d3plus.id += "_" + d.d3plus.suffix;
+      }
 
       d.d3plus.id = stringStrip(d.d3plus.id)
     }
@@ -324,9 +328,10 @@ module.exports = function(vars) {
 
           var id = d[vars.id.value],
               source = l[vars.edges.source][vars.id.value],
-              target = l[vars.edges.target][vars.id.value]
+              target = l[vars.edges.target][vars.id.value];
 
-          if (source == id || target == id) {
+          if (source == id || source == "left_" + id || source == "right_" + id ||
+              target == id || target == "left_" + id || target == "right_" + id) {
             var elem = vars.g.edge_hover.node().appendChild(this.cloneNode(true))
             d3.select(elem).datum(l).attr("opacity",1)
               .selectAll("line, path").datum(l)
@@ -341,7 +346,10 @@ module.exports = function(vars) {
         .attr("opacity",0)
         .selectAll("line, path")
           .style("stroke",vars.color.primary)
-          .style("stroke-width",function(){
+          .style("stroke-width",function(d){
+            if (vars.edges.path && d.dy) {
+              return Math.max(1, d.dy);
+            }
             return vars.edges.size.value ? d3.select(this).style("stroke-width")
                  : vars.data.stroke.width*2
           })
@@ -429,19 +437,30 @@ module.exports = function(vars) {
 
   edge_update()
 
-  if (!touch && vars.tooltip.value) {
+  if (vars.tooltip.value) {
 
     vars.g.data.selectAll("g")
       .on(events.over,function(d){
 
-        if (vars.mouse.value && vars.mouse.over.value && !vars.draw.frozen && (!d.d3plus || !d.d3plus.static)) {
+        if (touch) touchEvent(vars, d3.event);
+
+        if (!d3.event.buttons && vars.mouse.value && vars.mouse.over.value && !vars.draw.frozen && (!d.d3plus || !d.d3plus.static)) {
 
           if (typeof vars.mouse.over.value === "function") {
             vars.mouse.over.value(d, vars.self);
           }
           else {
 
-            d3.select(this).style("cursor","pointer")
+            var zoomDir = zoomDirection(d.d3plus_data || d, vars)
+            var pointer = typeof vars.mouse.viz === "function" ||
+                          typeof vars.mouse.viz[events.click] === "function" ||
+                          (vars.zoom.value && (vars.types[vars.type.value].zoom ||
+                                              (d.d3plus.threshold && d.d3plus.merged) ||
+                                              zoomDir === 1 ||
+                                              (zoomDir === -1 && vars.history.states.length && !vars.tooltip.value.long)));
+
+            d3.select(this)
+              .style("cursor", pointer ? "pointer" : "auto")
               .transition().duration(vars.timing.mouseevents)
               .call(transform,true)
 
@@ -482,16 +501,32 @@ module.exports = function(vars) {
           }
 
         }
+        else {
+          removeTooltip(vars.type.value);
+        }
 
       })
       .on(events.move,function(d){
 
-        if (vars.mouse.value && vars.mouse.move.value && !vars.draw.frozen && (!d.d3plus || !d.d3plus.static)) {
+        if (touch) touchEvent(vars, d3.event);
+
+        if (!d3.event.buttons && vars.mouse.value && vars.mouse.move.value && !vars.draw.frozen && (!d.d3plus || !d.d3plus.static)) {
 
           if (typeof vars.mouse.move.value === "function") {
             vars.mouse.move.value(d, vars.self);
           }
           else {
+
+            var zoomDir = zoomDirection(d.d3plus_data || d, vars)
+            var pointer = typeof vars.mouse.viz === "function" ||
+                          typeof vars.mouse.viz[events.click] === "function" ||
+                          (vars.zoom.value && (vars.types[vars.type.value].zoom ||
+                                              (d.d3plus.threshold && d.d3plus.merged) ||
+                                              zoomDir === 1 ||
+                                              (zoomDir === -1 && vars.history.states.length && !vars.tooltip.value.long)));
+
+
+            d3.select(this).style("cursor", pointer ? "pointer" : "auto");
 
             // vars.covered = false
             var tooltipType = vars.types[vars.type.value].tooltip || "follow"
@@ -524,11 +559,16 @@ module.exports = function(vars) {
           }
 
         }
+        else {
+          removeTooltip(vars.type.value);
+        }
 
       })
       .on(events.out,function(d){
 
-        if (vars.mouse.value && vars.mouse.out.value) {
+        if (touch) touchEvent(vars, d3.event);
+
+        if (!d3.event.buttons && vars.mouse.value && vars.mouse.out.value) {
 
           if (typeof vars.mouse.out.value === "function") {
             vars.mouse.out.value(d, vars.self);
@@ -565,6 +605,9 @@ module.exports = function(vars) {
           }
 
         }
+        else {
+          removeTooltip(vars.type.value);
+        }
 
       })
 
@@ -582,10 +625,14 @@ module.exports = function(vars) {
 
   }
 
+  d3.select(window).on("scroll.d3plus", function(){
+    removeTooltip(vars.type.value);
+  });
+
   vars.g.data.selectAll("g")
     .on(events.click,function(d){
 
-      if (vars.mouse.value && vars.mouse.click.value && !d3.event.defaultPrevented && !vars.draw.frozen && (!d.d3plus || !d.d3plus.static)) {
+      if (!(vars.mouse.viz && vars.mouse.viz.click === false) && vars.mouse.value && vars.mouse.click.value && !d3.event.defaultPrevented && !vars.draw.frozen && (!d.d3plus || !d.d3plus.static)) {
 
         if (typeof vars.mouse.click.value === "function") {
           vars.mouse.click.value(d, vars.self);

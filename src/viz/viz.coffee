@@ -22,6 +22,7 @@ module.exports = ->
       pie:      require "./types/pie.coffee"
       radar:    require "./types/radar.coffee"
       rings:    require "./types/rings.js"
+      sankey:   require "./types/sankey.coffee"
       scatter:  require "./types/scatter.coffee"
       stacked:  require "./types/stacked.coffee"
       table:    require "./types/table.js"
@@ -38,7 +39,7 @@ module.exports = ->
       vars.draw.timing    = 0 if vars.error.value
 
       # Analyze Container
-      container vars if vars.container.changed
+      container vars
 
       # Determine if in "small" mode
       small_width     = vars.width.value <= vars.width.small
